@@ -17,24 +17,21 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class DeliveryTest {
 
-    private Faker faker;
-
 
     @BeforeEach
     void setUpAll() {
         open("http://localhost:9999/");
-        faker = new Faker(new Locale("ru"));
 
     }
 
 
     @Test
     void shouldSendDataForDelivery() {
-        String date1 = DataGenerator.Registration.getDate(4);
-        String date2 = DataGenerator.Registration.getDate(20);
-        String city = DataGenerator.Registration.cityForCard("ru");
-        String name = DataGenerator.Registration.nameForCard("ru");
-        String phone = DataGenerator.Registration.phoneForCard("ru");
+        String date1 = DataGenerator.getDate(4);
+        String date2 = DataGenerator.getDate(20);
+        String city = DataGenerator.cityForCard("ru");
+        String name = DataGenerator.nameForCard("ru");
+        String phone = DataGenerator.phoneForCard("ru");
 
         $("[data-test-id='city'] input").setValue(city);
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
@@ -59,13 +56,13 @@ public class DeliveryTest {
 
     @Test
     void shouldTestInvalidName() {
-        String date = DataGenerator.Registration.getDate(4);
-        String date1 = DataGenerator.Registration.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.Registration.cityForCard("ru"));
+        String date = DataGenerator.getDate(4);
+        String date1 = DataGenerator.getDate(20);
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
-        $("[data-test-id=name] input").setValue("Ivan Ivanov");
-        $("[name='phone']").setValue(DataGenerator.Registration.phoneForCard("ru"));
+        $("[data-test-id=name] input").setValue(DataGenerator.invalidName("ru"));
+        $("[name='phone']").setValue(DataGenerator.phoneForCard("ru"));
         $("[data-test-id=agreement]").click();
         $("button.button").click();
         $("[data-test-id=name].input_invalid .input__sub").shouldBe(visible, Duration.ofSeconds(15)).
@@ -75,13 +72,13 @@ public class DeliveryTest {
 
     @Test
     void shouldTestInvalidPhone() {
-        String date = DataGenerator.Registration.getDate(4);
-        String date1 = DataGenerator.Registration.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.Registration.cityForCard("ru"));
+        String date = DataGenerator.getDate(4);
+        String date1 = DataGenerator.getDate(20);
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
-        $("[name='name']").setValue(DataGenerator.Registration.nameForCard("ru"));
-        $("[data-test-id=phone] input").setValue("7123456789");
+        $("[name='name']").setValue(DataGenerator.nameForCard("ru"));
+        $("[data-test-id=phone] input").setValue(DataGenerator.invalidPhone("ru"));
         $("[data-test-id='agreement']").click();
         $("button.button").click();
         $("[data-test-id='phone'] .input__sub").shouldBe(visible, Duration.ofSeconds(15))
@@ -89,14 +86,44 @@ public class DeliveryTest {
     }
 
     @Test
+    void shouldTestInvalidCity() {
+        String date = DataGenerator.getDate(4);
+        String date1 = DataGenerator.getDate(20);
+        $("[data-test-id='city'] input").setValue(DataGenerator.invalidCity("ru"));
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(date);
+        $("[name='name']").setValue(DataGenerator.nameForCard("ru"));
+        $("[data-test-id=phone] input").setValue(DataGenerator.phoneForCard("ru"));
+        $("[data-test-id='agreement']").click();
+        $("button.button").click();
+        $("[data-test-id='city'] .input__sub").shouldBe(visible, Duration.ofSeconds(15))
+                .shouldHave(exactText("Доставка в выбранный город недоступна"));
+    }
+
+    @Test
+    void shouldTestEmptyCity() {
+        String date = DataGenerator.getDate(4);
+        String date1 = DataGenerator.getDate(20);
+        $("[data-test-id='city'] input").setValue("");
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(date);
+        $("[name='name']").setValue(DataGenerator.nameForCard("ru"));
+        $("[data-test-id=phone] input").setValue(DataGenerator.phoneForCard("ru"));
+        $("[data-test-id='agreement']").click();
+        $("button.button").click();
+        $("[data-test-id='city'] .input__sub").shouldBe(visible, Duration.ofSeconds(15))
+                .shouldHave(exactText("Поле обязательно для заполнения"));
+    }
+
+    @Test
     void shouldTestEmptyName() {
-        String date = DataGenerator.Registration.getDate(4);
-        String date1 = DataGenerator.Registration.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.Registration.cityForCard("ru"));
+        String date = DataGenerator.getDate(4);
+        String date1 = DataGenerator.getDate(20);
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
         $("[data-test-id=name] input").setValue("");
-        $("[name='phone']").setValue(DataGenerator.Registration.phoneForCard("ru"));
+        $("[name='phone']").setValue(DataGenerator.phoneForCard("ru"));
         $("[data-test-id=agreement]").click();
         $("button.button").click();
         $("[data-test-id=name].input_invalid .input__sub").shouldBe(visible, Duration.ofSeconds(15)).
@@ -105,12 +132,12 @@ public class DeliveryTest {
 
     @Test
     void shouldTestEmptyPhone() {
-        String date = DataGenerator.Registration.getDate(4);
-        String date1 = DataGenerator.Registration.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.Registration.cityForCard("ru"));
+        String date = DataGenerator.getDate(4);
+        String date1 = DataGenerator.getDate(20);
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
-        $("[name='name']").setValue(DataGenerator.Registration.nameForCard("ru"));
+        $("[name='name']").setValue(DataGenerator.nameForCard("ru"));
         $("[data-test-id=phone] input").setValue("");
         $("[data-test-id=agreement]").click();
         $("button.button").click();
@@ -120,13 +147,13 @@ public class DeliveryTest {
 
     @Test
     void shouldTestNoAgreement() {
-        String date = DataGenerator.Registration.getDate(4);
-        String date1 = DataGenerator.Registration.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.Registration.cityForCard("ru"));
+        String date = DataGenerator.getDate(4);
+        String date1 = DataGenerator.getDate(20);
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
-        $("[name='name']").setValue(DataGenerator.Registration.nameForCard("ru"));
-        $("[name='phone']").setValue(DataGenerator.Registration.phoneForCard("ru"));
+        $("[name='name']").setValue(DataGenerator.nameForCard("ru"));
+        $("[name='phone']").setValue(DataGenerator.phoneForCard("ru"));
         $("button.button").click();
         $("[data-test-id='agreement'].input_invalid .checkbox__text").shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(exactText("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
