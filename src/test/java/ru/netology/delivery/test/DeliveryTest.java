@@ -29,7 +29,7 @@ public class DeliveryTest {
     void shouldSendDataForDelivery() {
         String date1 = DataGenerator.getDate(4);
         String date2 = DataGenerator.getDate(20);
-        String city = DataGenerator.cityForCard("ru");
+        String city = DataGenerator.cityForCard();
         String name = DataGenerator.nameForCard("ru");
         String phone = DataGenerator.phoneForCard("ru");
 
@@ -58,7 +58,7 @@ public class DeliveryTest {
     void shouldTestInvalidName() {
         String date = DataGenerator.getDate(4);
         String date1 = DataGenerator.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
         $("[data-test-id=name] input").setValue(DataGenerator.invalidName("ru"));
@@ -74,7 +74,7 @@ public class DeliveryTest {
     void shouldTestInvalidPhone() {
         String date = DataGenerator.getDate(4);
         String date1 = DataGenerator.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
         $("[name='name']").setValue(DataGenerator.nameForCard("ru"));
@@ -119,7 +119,7 @@ public class DeliveryTest {
     void shouldTestEmptyName() {
         String date = DataGenerator.getDate(4);
         String date1 = DataGenerator.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
         $("[data-test-id=name] input").setValue("");
@@ -134,7 +134,7 @@ public class DeliveryTest {
     void shouldTestEmptyPhone() {
         String date = DataGenerator.getDate(4);
         String date1 = DataGenerator.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
         $("[name='name']").setValue(DataGenerator.nameForCard("ru"));
@@ -149,7 +149,7 @@ public class DeliveryTest {
     void shouldTestNoAgreement() {
         String date = DataGenerator.getDate(4);
         String date1 = DataGenerator.getDate(20);
-        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard("ru"));
+        $("[data-test-id='city'] input").setValue(DataGenerator.cityForCard());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(date);
         $("[name='name']").setValue(DataGenerator.nameForCard("ru"));

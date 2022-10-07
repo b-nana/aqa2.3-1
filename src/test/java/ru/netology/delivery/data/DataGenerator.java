@@ -42,10 +42,10 @@ public class DataGenerator {
     }
 
 
-    public static String cityForCard(String ru) {
-        return new String(
-                faker.address().city()
-        );
+    public static String cityForCard() {
+        String[] cities = new String[]{"Москва", "Санкт-Петербург", "Волгоград", "Саратов", "Казань"};
+        int itemIndex = (int) (Math.random() * cities.length);
+        return cities[itemIndex];
     }
 
     public static String invalidCity(String ru) {
